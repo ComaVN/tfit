@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    S7_Tfit_Module::ModuleBase* modules[1] = {
+    S7_Tfit_Module::IModule* modules[1] = {
         new S7_Tfit_Module::Base64(),
     };
 
