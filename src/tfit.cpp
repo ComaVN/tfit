@@ -23,6 +23,14 @@ int main(int argc, char *argv[]) {
     std::string line;
     std::cin >> line;
     for (int i=0; i<1; ++i) {
-        std::cout << modules[i]->match(line);
+        std::string result = modules[i]->match(line);
+        if (result.length() > 0) {
+            std::cout << modules[i]->get_display_name() << " matched:\n" << result;
+        }
+    }
+    std::cout << "\n";
+
+    for (int i=0; i<1; ++i) {
+        delete modules[i];
     }
 }

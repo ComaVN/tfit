@@ -8,8 +8,9 @@ namespace S7_Tfit_Module {
 class IModule {
 
     public:
+        virtual std::string get_display_name() = 0;
         virtual std::string match(std::string line) = 0;
-
+        virtual ~IModule() {};
 };
 
 }

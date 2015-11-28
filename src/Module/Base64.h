@@ -8,6 +8,7 @@ namespace S7_Tfit_Module {
 class Base64: public ModuleBase {
 
     public:
+        std::string get_display_name() override;
         std::string match(std::string line) override;
 
 };
