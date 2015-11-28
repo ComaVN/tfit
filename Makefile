@@ -19,6 +19,9 @@ CPPFILES += $(SOURCEDIR)/cmdline.cpp
 CPPFILES += $(wildcard $(SOURCEDIR)/**/*.cpp)
 CXXFLAGS += -I$(SOURCEDIR)
 
+TESTDIR = test
+TESTDATADIR = $(TESTDIR)/data
+
 VENDORDIR = vendor
 # libb64:
 VENDORLIBS += $(VENDORDIR)/libb64
@@ -47,7 +50,10 @@ $(BUILDDIR)/$(EXECUTABLE).debug: $(VENDORLIBS) $(CPPFILES)
 	@mkdir -p $(@D)
 	$(CXX) -g -O0 $(CXXFLAGS) ${CPPFILES} -o $(BUILDDIR)/$(EXECUTABLE).debug
 
+test: debug
+	valgrind --leak-check=yes $(BUILDDIR)/$(EXECUTABLE).debug < $(TESTDATADIR)/foo.base64
+
 clean:
 	rm -rf $(BUILDDIR) $(SOURCEDIR)/cmdline.cpp $(SOURCEDIR)/cmdline.h $(VENDORDIR)
 
-.PHONY: all debug clean
+.PHONY: all debug test clean
