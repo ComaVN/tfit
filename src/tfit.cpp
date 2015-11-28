@@ -6,6 +6,7 @@
 #include <getopt.h>
 #include <iostream>
 #include <string>
+#include <vector>
 #include "cmdline.h"
 #include "Module/Base64.h"
 
@@ -16,21 +17,20 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    S7_Tfit_Module::IModule* modules[1] = {
-        new S7_Tfit_Module::Base64(),
-    };
+    std::vector<S7_Tfit_Module::IModule*> modules;
+    modules.push_back(new S7_Tfit_Module::Base64());
 
     std::string line;
     std::cin >> line;
-    for (int i=0; i<1; ++i) {
-        std::string result = modules[i]->match(line);
+    for (auto& module : modules) {
+        std::string result = module->match(line);
         if (result.length() > 0) {
-            std::cout << modules[i]->get_display_name() << " matched:\n" << result;
+            std::cout << module->get_display_name() << " matched:\n" << result;
         }
     }
     std::cout << "\n";
 
-    for (int i=0; i<1; ++i) {
-        delete modules[i];
+    for (auto& module : modules) {
+        delete module;
     }
 }
