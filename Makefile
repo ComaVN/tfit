@@ -30,10 +30,8 @@ CXXFLAGS += -DBUFFERSIZE=$(BUFFERSIZE)
 
 all: $(BUILDDIR)/$(EXECUTABLE)
 
-$(BUILDDIR):
-	mkdir -p $(BUILDDIR)
-
-$(BUILDDIR)/$(EXECUTABLE): $(BUILDDIR) $(VENDORLIBS) $(CPPFILES)
+$(BUILDDIR)/$(EXECUTABLE): $(VENDORLIBS) $(CPPFILES)
+	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) ${CPPFILES} -o $(BUILDDIR)/$(EXECUTABLE)
 
 $(VENDORDIR)/libb64:
@@ -43,7 +41,13 @@ $(VENDORDIR)/libb64:
 $(SOURCEDIR)/cmdline.cpp: $(SOURCEDIR)/$(EXECUTABLE).ggo
 	$(GENGETOPT) --output-dir $(SOURCEDIR) --c-extension cpp < $(SOURCEDIR)/$(EXECUTABLE).ggo
 
+debug: $(BUILDDIR)/$(EXECUTABLE).debug
+
+$(BUILDDIR)/$(EXECUTABLE).debug: $(VENDORLIBS) $(CPPFILES)
+	@mkdir -p $(@D)
+	$(CXX) -g -O0 $(CXXFLAGS) ${CPPFILES} -o $(BUILDDIR)/$(EXECUTABLE).debug
+
 clean:
 	rm -rf $(BUILDDIR) $(SOURCEDIR)/cmdline.cpp $(SOURCEDIR)/cmdline.h $(VENDORDIR)
 
-.PHONY: all clean
+.PHONY: all debug clean
