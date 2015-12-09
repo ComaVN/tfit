@@ -5,7 +5,7 @@ MAINTAINER Roel Harbers <roelharbers@gmail.com>
 #   docker build -t tfit
 #   echo 'SGVsbG8sIFdvcmxkIQo=' | docker run -i tfit
 
-ENV PACKAGES build-essential clang g++ gengetopt git libc++-dev
+ENV PACKAGES build-essential clang gengetopt git libc++-dev
 RUN apt-get update && apt-get install -qq -y --fix-missing --no-install-recommends $PACKAGES
 
 ENV PROJECT_NAME tfit
