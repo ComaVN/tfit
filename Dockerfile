@@ -3,7 +3,7 @@ MAINTAINER Roel Harbers <roelharbers@gmail.com>
 # This Dockerfile builds and runs the tfit executable.
 # Usage:
 #   docker build -t tfit
-#   echo 'SGVsbG8sIFdvcmxkIQo=' | docker run -i tfit
+#   echo 'SGVsbG8sIFdvcmxkIQo=' | docker run -i --rm tfit
 
 ENV PACKAGES build-essential clang gengetopt git libc++-dev
 RUN apt-get update && apt-get install -qq -y --fix-missing --no-install-recommends $PACKAGES
