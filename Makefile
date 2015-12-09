@@ -34,7 +34,7 @@ all: $(BUILDDIR)/$(EXECUTABLE)
 
 $(BUILDDIR)/$(EXECUTABLE): $(VENDORLIBS) $(CPPFILES)
 	@mkdir -p $(@D)
-	$(CXX) $(CXXFLAGS) ${CPPFILES} -o $(BUILDDIR)/$(EXECUTABLE)
+	$(CXX) ${CPPFILES} $(CXXFLAGS) -o $(BUILDDIR)/$(EXECUTABLE)
 
 $(VENDORDIR)/libb64:
 	git clone git://git.code.sf.net/p/libb64/git $(VENDORDIR)/libb64
@@ -47,7 +47,7 @@ debug: $(BUILDDIR)/$(EXECUTABLE).debug
 
 $(BUILDDIR)/$(EXECUTABLE).debug: $(VENDORLIBS) $(CPPFILES)
 	@mkdir -p $(@D)
-	$(CXX) -g -O0 $(CXXFLAGS) ${CPPFILES} -o $(BUILDDIR)/$(EXECUTABLE).debug
+	$(CXX) -g -O0 ${CPPFILES} $(CXXFLAGS) -o $(BUILDDIR)/$(EXECUTABLE).debug
 
 test: debug
 	valgrind --leak-check=yes $(BUILDDIR)/$(EXECUTABLE).debug < $(TESTDATADIR)/foo.base64
