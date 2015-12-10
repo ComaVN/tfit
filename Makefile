@@ -50,7 +50,7 @@ $(BUILDDIR)/$(EXECUTABLE).debug: $(VENDORLIBS) $(CPPFILES)
 	$(CXX) -g -O0 ${CPPFILES} $(CXXFLAGS) -o $(BUILDDIR)/$(EXECUTABLE).debug
 
 test: debug
-	valgrind --leak-check=yes $(BUILDDIR)/$(EXECUTABLE).debug < $(TESTDATADIR)/foo.base64
+	valgrind --error-exitcode=1 --leak-check=yes --leak-check=yes $(BUILDDIR)/$(EXECUTABLE).debug < $(TESTDATADIR)/foo.base64
 
 clean:
 	rm -rf $(BUILDDIR) $(SOURCEDIR)/cmdline.cpp $(SOURCEDIR)/cmdline.h $(VENDORDIR)
