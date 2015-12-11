@@ -36,6 +36,8 @@ $(BUILDDIR)/$(EXECUTABLE): $(VENDORLIBS) $(CPPFILES)
 	@mkdir -p $(@D)
 	$(CXX) ${CPPFILES} $(CXXFLAGS) -o $(BUILDDIR)/$(EXECUTABLE)
 
+vendor: $(VENDORDIR)/libb64
+
 $(VENDORDIR)/libb64:
 	git clone git://git.code.sf.net/p/libb64/git $(VENDORDIR)/libb64
 	make -C $(VENDORDIR)/libb64/src
@@ -55,4 +57,4 @@ test: debug
 clean:
 	rm -rf $(BUILDDIR) $(SOURCEDIR)/cmdline.cpp $(SOURCEDIR)/cmdline.h $(VENDORDIR)
 
-.PHONY: all debug test clean
+.PHONY: all vendor debug test clean

@@ -14,6 +14,10 @@ RUN mkdir -p $PROJECT_PATH
 
 WORKDIR $PROJECT_PATH
 
+# Don't retrieve vendor code everytime our code changes
+COPY Makefile Makefile
+RUN make vendor
+
 COPY . .
 
 RUN make
