@@ -1,26 +1,20 @@
-FROM debian
+FROM golang:1.14-alpine
 MAINTAINER Roel Harbers <roelharbers@gmail.com>
 # This Dockerfile builds and runs the tfit executable.
 # Usage:
-#   docker build -t tfit
+#   docker build -t tfit .
 #   echo 'SGVsbG8sIFdvcmxkIQo=' | docker run -i --rm tfit
 
-ENV PACKAGES build-essential clang gengetopt git libc++-dev valgrind
-RUN apt-get update && apt-get install -qq -y --fix-missing --no-install-recommends $PACKAGES
+ENV PROJECT_PATH /workspace
+ENV BUILD_PATH "$PROJECT_PATH/build"
 
-ENV PROJECT_NAME tfit
-ENV PROJECT_PATH /$PROJECT_NAME
-RUN mkdir -p $PROJECT_PATH
+RUN mkdir -p "$PROJECT_PATH"
+WORKDIR "$PROJECT_PATH"
 
-WORKDIR $PROJECT_PATH
+COPY go.mod "$PROJECT_PATH/go.mod"
+RUN go mod download
 
-# Don't retrieve vendor code everytime our code changes
-COPY Makefile Makefile
-RUN make vendor
+COPY cmd "$PROJECT_PATH/cmd"
+RUN CGO_ENABLED=0 GOOS=linux go build -o "$BUILD_PATH/tfit" cmd/tfit/main.go
 
-COPY . .
-
-RUN make
-RUN make test
-
-CMD $PROJECT_PATH/build/tfit
+CMD "$BUILD_PATH/tfit"
