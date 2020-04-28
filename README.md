@@ -19,3 +19,11 @@ The inspiration for this project came during a sleepless night in a lodge at 5,1
   \\/          |
    V           \
 ```
+
+## Dev instructions
+
+To build the main executable and run it:
+```
+docker build -t tfit .
+docker run -i tfit < test/data/foo.base64
+```
