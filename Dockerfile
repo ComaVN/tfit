@@ -15,6 +15,7 @@ COPY go.mod "$PROJECT_PATH/go.mod"
 RUN go mod download
 
 COPY cmd "$PROJECT_PATH/cmd"
+COPY internal "$PROJECT_PATH/internal"
 RUN CGO_ENABLED=0 GOOS=linux go build -o "$BUILD_PATH/tfit" cmd/tfit/main.go
 
 CMD "$BUILD_PATH/tfit"

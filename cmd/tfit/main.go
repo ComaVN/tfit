@@ -1,9 +1,11 @@
 package main
 
 import (
-	"fmt"
+	"github.com/ComaVN/tfit/internal/tfit"
 )
 
 func main() {
-	fmt.Println("Hello, world.")
+	config := tfit.NewConfig()
+	tfitter := tfit.NewTfitter(config)
+	tfitter.Tfit()
 }
