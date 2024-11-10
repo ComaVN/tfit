@@ -2,7 +2,10 @@ package tfit
 
 import (
 	"fmt"
+	"io"
 	"os"
+
+	"github.com/ComaVN/multee"
 )
 
 type tfitter struct {
@@ -13,9 +16,19 @@ type Tfitter interface {
 	Tfit()
 }
 
+type moduleInstance struct {
+	module Module
+	reader io.Reader
+}
+
 func (tf *tfitter) Tfit() {
-	for _, module := range tf.config.Modules() {
-		fmt.Printf("%s matched:\n%s\n", module.PrettyName(), module.Match(os.Stdin))
+	mr := multee.NewMulteeReader(tf.config.Input())
+	moduleInstances := make([]moduleInstance, len(tf.config.Modules()))
+	for idx, module := range tf.config.Modules() {
+		moduleInstances[idx] = moduleInstance{module, mr.NewReader()}
+	}
+	for _, mi := range moduleInstances {
+		fmt.Printf("%s matched:\n%s\n", mi.module.PrettyName(), mi.module.Match(os.Stdin))
 	}
 }
 

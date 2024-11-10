@@ -1,21 +1,20 @@
-FROM golang:1.14-alpine
-MAINTAINER Roel Harbers <roelharbers@gmail.com>
+FROM golang:1.20-alpine AS builder
 # This Dockerfile builds and runs the tfit executable.
 # Usage:
 #   docker build -t tfit .
 #   echo 'SGVsbG8sIFdvcmxkIQo=' | docker run -i --rm tfit
 
-ENV PROJECT_PATH /workspace
-ENV BUILD_PATH "$PROJECT_PATH/build"
+WORKDIR /workspace
 
-RUN mkdir -p "$PROJECT_PATH"
-WORKDIR "$PROJECT_PATH"
-
-COPY go.mod "$PROJECT_PATH/go.mod"
+COPY go.mod go.sum ./
 RUN go mod download
 
-COPY cmd "$PROJECT_PATH/cmd"
-COPY internal "$PROJECT_PATH/internal"
-RUN CGO_ENABLED=0 GOOS=linux go build -o "$BUILD_PATH/tfit" cmd/tfit/main.go
+COPY cmd/ ./cmd
+COPY internal ./internal
+RUN CGO_ENABLED=0 GOOS=linux go build -o ./build/tfit cmd/tfit/main.go
 
-CMD "$BUILD_PATH/tfit"
+
+FROM scratch
+
+COPY --from=builder /workspace/build/tfit /tfit
+CMD ["/tfit"]

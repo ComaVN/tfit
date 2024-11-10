@@ -24,6 +24,5 @@ The inspiration for this project came during a sleepless night in a lodge at 5,1
 
 To build the main executable and run it:
 ```
-docker build -t tfit .
-docker run -i tfit < test/data/foo.base64
+docker run -i --rm $(docker build -q .) < test/data/foo.base64
 ```
